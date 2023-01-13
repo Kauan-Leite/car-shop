@@ -41,11 +41,37 @@ class CarController {
 
   public async getByID() {
     const { id } = this.req.params;
-    const cars = await this.service.getByID(id);
 
     if (id.length !== 24 || !id) {
       return this.res.status(422).json({ message: 'Invalid mongo id' });
     }
+
+    const cars = await this.service.getByID(id);
+
+    if (typeof cars === 'string') {
+      return this.res.status(404).json({ message: 'Car not found' });
+    }
+
+    return this.res.status(200).json(cars);
+  }
+
+  public async updateByID() {
+    const { id } = this.req.params;
+    const car: ICar = {
+      model: this.req.body.model,
+      year: this.req.body.year,
+      color: this.req.body.color,
+      status: this.req.body.status || false,
+      buyValue: this.req.body.buyValue,
+      doorsQty: this.req.body.doorsQty,
+      seatsQty: this.req.body.seatsQty,
+    };
+
+    if (id.length !== 24 || !id) {
+      return this.res.status(422).json({ message: 'Invalid mongo id' });
+    }
+
+    const cars = await this.service.updateByID(id, car);
 
     if (typeof cars === 'string') {
       return this.res.status(404).json({ message: 'Car not found' });

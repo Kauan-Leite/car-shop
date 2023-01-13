@@ -44,6 +44,21 @@ class CarService {
       return 'NOT_FOUND';
     }
   }
+
+  public async updateByID(id: string, dataCar: ICar) {
+    const carODM = new CarODM();
+
+    try {
+      const car = await carODM.update(id, dataCar);
+      
+      if (car !== null) {
+        return this.dataCar(car);
+      }
+      return 'NOT_FOUND';
+    } catch (error) {
+      return 'NOT_FOUND';
+    }
+  }
 }
 
 export default CarService;
