@@ -22,6 +22,28 @@ class MotorcycleService {
 
     return this.dataMotorcycle(newMoto);
   }
+
+  public async getAll() {
+    const motorcycleODM = new MotorcycleODM();
+    const allMotos = await motorcycleODM.findAll();
+
+    return allMotos.map((moto) => this.dataMotorcycle(moto));
+  }
+
+  public async getByID(id: string) {
+    const motorcycleODM = new MotorcycleODM();
+    
+    try {
+      const moto = await motorcycleODM.findByID(id);
+
+      if (moto !== null) {
+        return this.dataMotorcycle(moto);
+      }
+      return 'NOT_FOUND';
+    } catch (error) {
+      return 'NOT_FOUND';
+    }
+  }
 }
 
 export default MotorcycleService;
