@@ -44,6 +44,21 @@ class MotorcycleService {
       return 'NOT_FOUND';
     }
   }
+
+  public async updateByID(id: string, dataMoto: IMotorcycle) {
+    const motoODM = new MotorcycleODM();
+
+    try {
+      const moto = await motoODM.update(id, dataMoto);
+
+      if (moto !== null) {
+        return this.dataMotorcycle(moto);
+      }
+      return 'NOT_FOUND';
+    } catch (error) {
+      return 'NOT_FOUND';
+    }
+  }
 }
 
 export default MotorcycleService;

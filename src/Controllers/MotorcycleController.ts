@@ -54,6 +54,31 @@ class MotorcycleController {
     
     return this.res.status(200).json(moto);
   }
+
+  public async updateByID() {
+    const { id } = this.req.params;
+    const moto: IMotorcycle = {
+      model: this.req.body.model,
+      year: this.req.body.year,
+      color: this.req.body.color,
+      status: this.req.body.status || false,
+      buyValue: this.req.body.buyValue,
+      category: this.req.body.category,
+      engineCapacity: this.req.body.engineCapacity,
+    };
+
+    if (id.length !== 24 || !id) {
+      return this.res.status(422).json({ message: 'Invalid mongo id' });
+    }
+
+    const motos = await this.service.updateByID(id, moto);
+
+    if (typeof motos === 'string') {
+      return this.res.status(404).json({ message: 'Motorcycle not found' });
+    }
+
+    return this.res.status(200).json(motos);
+  }
 }
 
 export default MotorcycleController;
